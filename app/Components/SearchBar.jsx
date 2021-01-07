@@ -85,7 +85,7 @@ export default class SearchBar extends React.Component {
                 <div style={{ display: "flex" }}>
 
                     <div style={{ flex: "1" }}>
-                        <TextField label="Search" value={this.state.searchInput} onChange={event => this.searchInputChangeHandler(event)} />
+                        <TextField style={{marginRight:"10%", marginTop:"5%"}} label="Search" value={this.state.searchInput} onChange={event => this.searchInputChangeHandler(event)} />
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Search type</FormLabel>
                             <RadioGroup aria-label="searchType" name="searchType1" value={this.state.searchType} onChange={event => this.checkboxChangeHandler(event)}>
@@ -124,7 +124,7 @@ export default class SearchBar extends React.Component {
                         </div>
                     </div>
 
-                    <div>
+                    <div style={{marginTop:"5%"}}>
                         <Button variant="contained" type="submit" >Submit</Button>
                         <Button variant="contained" type="button" onClick={() => this.onClear()} >Clear</Button>
                     </div>
