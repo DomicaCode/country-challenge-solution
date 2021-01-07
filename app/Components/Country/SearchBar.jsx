@@ -116,10 +116,10 @@ export default class SearchBar extends React.Component {
                         </React.Fragment>}
                         <div>
                             <div>
-                                <TextField label="Population from" value={this.state.popFrom} onChange={event => this.populationFromChangeHandler(event)} />
+                                <TextField type="number" label="Population from" value={this.state.popFrom} onChange={event => this.populationFromChangeHandler(event)} />
                             </div>
                             <div>
-                                <TextField label="Population to" value={this.state.popTo} onChange={event => this.populationToChangeHandler(event)} />
+                                <TextField type="number" label="Population to" value={this.state.popTo} onChange={event => this.populationToChangeHandler(event)} />
                             </div>
                         </div>
                     </div>

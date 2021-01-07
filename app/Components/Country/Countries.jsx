@@ -1,7 +1,6 @@
 import React from 'react'
-import CountryTable from './CountryTable.jsx'
+import AbstractTable from '../AbstractTable.jsx'
 import SearchBar from './SearchBar.jsx'
-import LanguageService from '../Services/LanguageService.js'
 
 class Countries extends React.Component {
 
@@ -14,6 +13,15 @@ class Countries extends React.Component {
             regions: []
         };
 
+        this.cells = [
+            { key: "Name", value: "name" },
+            { key: "Capital", value:"capital"},
+            { key: "Region", value:"region"},
+            { key: "Population", value:"population"},
+            { key: "Languages", value:"displayLanguages"},
+            { key: "Timezones", value:"displayTimezones"},
+        ]
+
         this.onSubmit = this.onSubmit.bind(this);
         this.onClear = this.onClear.bind(this)
     }
@@ -22,7 +30,13 @@ class Countries extends React.Component {
         fetch(`${this.apiKey}/all`)
             .then(r => r.json())
             .then(languageData => {
-                this.initialData = languageData;
+                this.initialData = languageData.map((data) => {
+                    data.displayLanguages = data.languages.map((language) => language.name).join();
+                    data.displayTimezones = data.timezones.join();
+
+                    return data;
+                })
+
                 this.setState({ regions: [...new Set(languageData.map(c => c.region))].filter(r => r !== null && r !== "") });
 
                 this.setState({ data: languageData })
@@ -44,7 +58,6 @@ class Countries extends React.Component {
         if (formData.popFrom && formData.popFrom !== '' && formData.popTo && formData.popTo !== '') {
             result = result.filter(x => x.population >= formData.popFrom && x.population <= formData.popTo);
         }
-
 
         // -- Filter by name, capital, languages --
         if (formData.searchType === 'name') {
@@ -87,7 +100,7 @@ class Countries extends React.Component {
         return (
             <React.Fragment>
                 <SearchBar onSubmit={this.onSubmit} onClear={this.onClear} regions={this.state.regions} />
-                <CountryTable data={this.state.data} />
+                <AbstractTable data={this.state.data} cells={this.cells} />
             </React.Fragment>
         )
     }

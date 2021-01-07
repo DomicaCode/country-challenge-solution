@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 
-export default class CountryTable extends React.Component {
+export default class AbstractTable extends React.Component {
 
     constructor(props) {
         super(props);
@@ -42,29 +42,23 @@ export default class CountryTable extends React.Component {
                     <Table className={this.classes.table} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell align="right">Capital</TableCell>
-                                <TableCell align="right">Region</TableCell>
-                                <TableCell align="right">Population</TableCell>
-                                <TableCell align="right">Languages</TableCell>
-                                <TableCell align="right">Timezones</TableCell>
+                                {this.props.cells.map((cell, idx) => {
+                                    return (
+                                        <TableCell key={idx}>{cell.key}</TableCell>
+                                    )
+                                })}
+
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.props.data.map((country) => {
-                                const languages = country.languages.map((language) => language.name);
-                                const languagesRow = languages.join();
-
-                                const timezonesRow = country.timezones.join();
-
+                            {this.props.data.map((item, idx) => {
                                 return (
-                                    <TableRow key={country.name}>
-                                        <TableCell component="th" scope="row">{country.name}</TableCell>
-                                        <TableCell align="right">{country.capital}</TableCell>
-                                        <TableCell align="right">{country.region}</TableCell>
-                                        <TableCell align="right">{country.population}</TableCell>
-                                        <TableCell align="right">{languagesRow}</TableCell>
-                                        <TableCell align="right">{timezonesRow}</TableCell>
+                                    <TableRow key={idx}>
+                                        {this.props.cells.map((cell, idx) => {
+                                            return (
+                                                <TableCell key={idx}>{item[cell.value]}</TableCell>
+                                            )
+                                        })}
                                     </TableRow>
                                 )
                             })}
