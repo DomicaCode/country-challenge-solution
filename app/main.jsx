@@ -1,27 +1,11 @@
 import React from 'react'
-import createReactClass from 'create-react-class'
-import withStyles from '@material-ui/styles/withStyles'
+import Languages from './Components/Languages.jsx'
 
+export default class Main extends React.Component {
 
-module.exports = withStyles(styles)(createReactClass({
-  displayName: 'Main',
-
-
-  render () {
-    const { classes } = this.props
+  render() {
     return (
-      <div className={classes.container}>
-          <h1> World Countries </h1>
-      </div>
+      <Languages/>
     )
-  }
-}))
-
-
-function styles () {
-  return {
-    container: {
-      padding: 36
-    }
   }
 }
