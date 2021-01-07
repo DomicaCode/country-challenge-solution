@@ -7,6 +7,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 
 export default class SearchBar extends React.Component {
 
@@ -18,17 +21,35 @@ export default class SearchBar extends React.Component {
         this.state = {
             searchInput: '',
             searchType: 'name',
+            region: 'empty',
+            popFrom: '',
+            popTo: '',
         }
     }
 
-    inputChangeHandler(event) {
+    // --- HANDLERS ---
+    searchInputChangeHandler(event) {
         this.setState({ searchInput: event.target.value });
     }
 
     checkboxChangeHandler(event) {
-        this.setState({ searchType: event.target.value })
+        this.setState({ searchType: event.target.value });
     }
 
+    regionChangeHandler(event) {
+        this.setState({ region: event.target.value });
+    }
+
+    populationFromChangeHandler(event) {
+        this.setState({ popFrom: event.target.value })
+    }
+
+    populationToChangeHandler(event) {
+        this.setState({ popTo: event.target.value })
+    }
+
+
+    // --- FORM ACTIONS ---
     onSubmit(event) {
         event.preventDefault();
 
@@ -39,6 +60,9 @@ export default class SearchBar extends React.Component {
         this.setState({
             searchInput: '',
             searchType: 'name',
+            region: 'empty',
+            popFrom: '',
+            popTo: '',
         })
 
         this.props.onClear();
@@ -58,17 +82,53 @@ export default class SearchBar extends React.Component {
     render() {
         return (
             <form className={this.classes.root} autoComplete="off" noValidate onSubmit={event => this.onSubmit(event)}>
-                <TextField label="Search" value={this.state.searchInput} onChange={event => this.inputChangeHandler(event)} />
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Search type</FormLabel>
-                    <RadioGroup aria-label="searchType" name="searchType1" value={this.state.searchType} onChange={event => this.checkboxChangeHandler(event)}>
-                        <FormControlLabel value="name" control={<Radio />} label="Name" />
-                        <FormControlLabel value="capital" control={<Radio />} label="Capital" />
-                        <FormControlLabel value="languages" control={<Radio />} label="Languages" />
-                    </RadioGroup>
-                </FormControl>
-                <Button variant="contained" type="submit" >Submit</Button>
-                <Button variant="contained" type="button" onClick={() => this.onClear()} >Clear</Button>
+                <div style={{ display: "flex" }}>
+
+                    <div style={{ flex: "1" }}>
+                        <TextField label="Search" value={this.state.searchInput} onChange={event => this.searchInputChangeHandler(event)} />
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">Search type</FormLabel>
+                            <RadioGroup aria-label="searchType" name="searchType1" value={this.state.searchType} onChange={event => this.checkboxChangeHandler(event)}>
+                                <FormControlLabel value="name" control={<Radio />} label="Name" />
+                                <FormControlLabel value="capital" control={<Radio />} label="Capital" />
+                                <FormControlLabel value="languages" control={<Radio />} label="Languages" />
+                            </RadioGroup>
+                        </FormControl>
+                    </div>
+
+                    <div style={{ flex: "2" }}>
+                        {this.props.regions && <React.Fragment>
+                            <InputLabel id="demo-simple-select-label">Region</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={this.state.region}
+                                onChange={event => this.regionChangeHandler(event)}
+                            >
+                                <MenuItem value="empty">All</MenuItem>
+                                {this.props.regions.map((region) => {
+                                    return (
+                                        <MenuItem key={region} value={region}>{region}</MenuItem>
+                                    )
+                                })}
+
+                            </Select>
+                        </React.Fragment>}
+                        <div>
+                            <div>
+                                <TextField label="Population from" value={this.state.popFrom} onChange={event => this.populationFromChangeHandler(event)} />
+                            </div>
+                            <div>
+                                <TextField label="Population to" value={this.state.popTo} onChange={event => this.populationToChangeHandler(event)} />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <Button variant="contained" type="submit" >Submit</Button>
+                        <Button variant="contained" type="button" onClick={() => this.onClear()} >Clear</Button>
+                    </div>
+                </div>
             </form>
         )
     }

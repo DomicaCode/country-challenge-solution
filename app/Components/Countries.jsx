@@ -10,7 +10,8 @@ class Countries extends React.Component {
         this.apiKey = "https://restcountries.eu/rest/v2";
 
         this.state = {
-            data: []
+            data: [],
+            regions: []
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -22,6 +23,8 @@ class Countries extends React.Component {
             .then(r => r.json())
             .then(languageData => {
                 this.initialData = languageData;
+                this.setState({ regions: [...new Set(languageData.map(c => c.region))].filter(r => r !== null && r !== "") });
+
                 this.setState({ data: languageData })
             });
     }
@@ -30,6 +33,18 @@ class Countries extends React.Component {
     onSubmit(formData) {
         let result = this.initialData;
 
+        // -- Filter region --
+        //This is first to reduce further load (if selected)
+        if (formData.region !== null && formData.region !== 'empty') {
+            result = result.filter(x => x.region === formData.region);
+        }
+
+        if (formData.popFrom && !isNaN(formData.popFrom) && formData.popFrom !== '' && formData.popTo && !isNaN(formData.popTo) && formData.popTo !== '') {
+            result = result.filter(x => x.population >= formData.popFrom && x.population <= formData.popTo);
+        }
+
+
+        // -- Filter by name, capital, languages --
         if (formData.searchType === 'name') {
             result = result.filter(x => x.name.includes(formData.searchInput))
         }
@@ -38,7 +53,7 @@ class Countries extends React.Component {
         }
         else if (formData.searchType === 'languages') {
 
-            //Could have done better with, written quickly
+            //Could have done better, written quickly
             const languageResult = [];
 
             this.initialData.forEach(country => {
@@ -69,7 +84,7 @@ class Countries extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <SearchBar onSubmit={this.onSubmit} onClear={this.onClear} />
+                <SearchBar onSubmit={this.onSubmit} onClear={this.onClear} regions={this.state.regions} />
                 <CountryTable data={this.state.data} />
             </React.Fragment>
         )
