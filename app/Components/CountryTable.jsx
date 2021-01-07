@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 
-export default class LanguageTable extends React.Component {
+export default class CountryTable extends React.Component {
 
     constructor(props) {
         super(props);
@@ -23,8 +23,6 @@ export default class LanguageTable extends React.Component {
     componentDidUpdate() {
         if (this.props.data && this.props.data.length !== 0 && this.state.isLoading) {
             this.setState({ isLoading: false })
-
-
         }
     }
 
@@ -60,7 +58,7 @@ export default class LanguageTable extends React.Component {
                                 const timezonesRow = country.timezones.join();
 
                                 return (
-                                    <TableRow key="test">
+                                    <TableRow key={country.name}>
                                         <TableCell component="th" scope="row">{country.name}</TableCell>
                                         <TableCell align="right">{country.capital}</TableCell>
                                         <TableCell align="right">{country.region}</TableCell>

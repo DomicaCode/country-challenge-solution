@@ -1,11 +1,11 @@
 import React from 'react'
-import Languages from './Components/Languages.jsx'
+import Countries from './Components/Countries.jsx'
 
 export default class Main extends React.Component {
 
   render() {
     return (
-      <Languages/>
+      <Countries />
     )
   }
 }
