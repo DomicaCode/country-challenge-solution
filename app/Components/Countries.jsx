@@ -39,7 +39,7 @@ class Countries extends React.Component {
             result = result.filter(x => x.region === formData.region);
         }
 
-        if (formData.popFrom && !isNaN(formData.popFrom) && formData.popFrom !== '' && formData.popTo && !isNaN(formData.popTo) && formData.popTo !== '') {
+        if (formData.popFrom && formData.popFrom !== '' && formData.popTo && formData.popTo !== '') {
             result = result.filter(x => x.population >= formData.popFrom && x.population <= formData.popTo);
         }
 
@@ -56,7 +56,7 @@ class Countries extends React.Component {
             //Could have done better, written quickly
             const languageResult = [];
 
-            this.initialData.forEach(country => {
+            result.forEach(country => {
                 country.languages.forEach(language => {
                     if (language.name.includes(formData.searchInput) && !languageResult.includes(c => c.name === country.name)) {
                         languageResult.push(country);
