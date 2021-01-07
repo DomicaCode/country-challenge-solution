@@ -33,6 +33,8 @@ class Countries extends React.Component {
     onSubmit(formData) {
         let result = this.initialData;
 
+        const searchInput = formData.searchInput.toLowerCase();
+
         // -- Filter region --
         //This is first to reduce further load (if selected)
         if (formData.region !== null && formData.region !== 'empty') {
@@ -46,10 +48,10 @@ class Countries extends React.Component {
 
         // -- Filter by name, capital, languages --
         if (formData.searchType === 'name') {
-            result = result.filter(x => x.name.includes(formData.searchInput))
+            result = result.filter(x => x.name.toLowerCase().includes(searchInput))
         }
         else if (formData.searchType === 'capital') {
-            result = result.filter(x => x.capital.includes(formData.searchInput))
+            result = result.filter(x => x.capital.toLowerCase().includes(searchInput))
         }
         else if (formData.searchType === 'languages') {
 
@@ -58,7 +60,7 @@ class Countries extends React.Component {
 
             result.forEach(country => {
                 country.languages.forEach(language => {
-                    if (language.name.includes(formData.searchInput) && !languageResult.includes(c => c.name === country.name)) {
+                    if (language.name.toLowerCase().includes(searchInput) && !languageResult.includes(c => c.name === country.name)) {
                         languageResult.push(country);
                     }
                 })
