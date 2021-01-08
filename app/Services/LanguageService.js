@@ -1,20 +1,17 @@
 export default class LanguageService {
+  constructor () {
+    this.apiKey = 'https://restcountries.eu/rest/v2'
+  }
 
-    constructor() {
-        this.apiKey = "https://restcountries.eu/rest/v2";
-    }
+  getAllLanguages () {
+    let languageData = null
 
-    getAllLanguages() {
+    window.fetch(`${this.apiKey}/all`)
+      .then(r => r.json())
+      .then(data => {
+        languageData = data
+      })
 
-        let languageData = null;
-
-        fetch(`${this.apiKey}/all`)
-            .then(r => r.json())
-            .then(data => {
-                languageData = data;
-            });
-
-        return languageData;
-    }
-
+    return languageData
+  }
 }
